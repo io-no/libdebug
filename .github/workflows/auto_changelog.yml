@@ -49,7 +49,7 @@ jobs:
           data = tomllib.loads(pathlib.Path("pyproject.toml").read_text(encoding="utf-8"))
           name = data["project"]["name"]
           ver  = data["project"]["version"]
-          code = (data.get("tool", {}).get("libdebug", {}).get("codename", "")
+          code = data.get("tool", {}).get("libdebug", {}).get("codename", "")
           with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as fo:
               fo.write(f"name={name}\nversion={ver}\ncodename={code}\n")
           with open(os.environ["GITHUB_ENV"], "a", encoding="utf-8") as fe:
