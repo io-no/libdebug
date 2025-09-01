@@ -27,6 +27,6 @@ jobs:
           done
 
           if [ "$found" = false ]; then
-            echo "::error::No changelog fragment found. Add newsfragments/${PR_NUMBER}.{feature,improvement,bugfix,ci,test,doc}.md (see CONTRIBUTING.md → Changelog fragments)."
+            echo "::error::No changelog fragment found. Add newsfragments/${PR_NUMBER}.{feature,improvement,bugfix,test,doc}.md (see CONTRIBUTING.md → Changelog fragments)."
             exit 1   # <- red job when missing
           fi

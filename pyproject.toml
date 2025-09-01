@@ -102,22 +102,22 @@ filename = "CHANGELOG.md"
 start_string = "<!-- towncrier release notes start -->"
 title_format = "## {version}"
 
-[[tool.towncrier.section]]
+[[tool.towncrier.type]]
 name = "Features"
-types = ["feature"]
+directory = "feature"
 
-[[tool.towncrier.section]]
+[[tool.towncrier.type]]
 name = "Other Improvements"
-types = ["improvement"]
+directory = "improvement"
 
-[[tool.towncrier.section]]
+[[tool.towncrier.type]]
 name = "Bug Fixes"
-types = ["bugfix"]
+directory = "bugfix"
 
-[[tool.towncrier.section]]
+[[tool.towncrier.type]]
 name = "Testing & CI"
-types = ["ci", "test"]
+directory = "test"
 
-[[tool.towncrier.section]]
+[[tool.towncrier.type]]
 name = "Documentation"
-types = ["doc"]
+directory = "doc"
