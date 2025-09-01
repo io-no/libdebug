@@ -68,17 +68,12 @@ jobs:
           echo "Version string: $VSTR"
           towncrier build --yes --version "$VSTR"
 
-      - name: Commit CHANGELOG.md (if changed)
+      - name: Commit CHANGELOG.md
         run: |
-          set -euo pipefail
-          if ! git diff --quiet -- CHANGELOG.md; then
-            git config user.name "github-actions[bot]"
-            git config user.email "github-actions[bot]@users.noreply.github.com"
-            MSG="doc: updated CHANGELOG for $NAME $VER"
-            if [ -n "${CODE:-}" ]; then MSG="$MSG - $CODE"; fi
-            git add CHANGELOG.md
-            git commit -m "$MSG"
-            git push
-          else
-            echo "No changelog changes."
-          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          MSG="doc: updated CHANGELOG for $NAME $VER"
+          if [ -n "${CODE:-}" ]; then MSG="$MSG - $CODE"; fi
+          git add CHANGELOG.md
+          git commit -m "$MSG"
+          git push
