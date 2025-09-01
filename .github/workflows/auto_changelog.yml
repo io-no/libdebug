@@ -2,8 +2,8 @@
 name: Build changelog on release
 
 on:
-  release:
-    types: [published]  # or use: push: { tags: ["v*"] }
+  push:
+    tags: ['*']
 
 permissions:
   contents: write
