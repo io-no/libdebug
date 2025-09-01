@@ -7,3 +7,8 @@ Add any **manual notes** you want to keep (release summaries, upgrade guides, et
 - See `CONTRIBUTING.md` for how to add a `newsfragments/<PR>.<type>.md`.
 
 <!-- towncrier release notes start -->
+## libdebug 0.9.0 - 🏰 White Castle 🏰
+
+### Testing & CI
+
+- Test (#30)
