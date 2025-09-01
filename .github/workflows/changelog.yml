@@ -1,40 +1,53 @@
-name: Changelog fragment check
+# .github/workflows/changelog-fragment.yml
+name: Changelog fragment
 
 on:
   pull_request:
     types: [opened, synchronize, reopened, edited, ready_for_review]
 
 jobs:
-  check-fragment:
+  fragment:
     runs-on: ubuntu-latest
     permissions:
+      contents: read
       pull-requests: read
+      checks: write   # needed to create a neutral check run
     steps:
       - uses: actions/checkout@v4
 
-      - name: Check for news fragment
-        id: fragment
+      - name: Detect news fragment
+        id: detect
         run: |
           PR_NUMBER=$(jq -r .pull_request.number "$GITHUB_EVENT_PATH")
           ALLOWED_TYPES="feature improvement bugfix ci test doc"
 
           shopt -s nullglob
-          matches=( )
+          found="false"
           for t in $ALLOWED_TYPES; do
-            for f in newsfragments/${PR_NUMBER}.${t}.md; do
-              matches+=( "$f" )
-            done
+            if compgen -G "newsfragments/${PR_NUMBER}.${t}.md" > /dev/null; then
+              found="true"
+            fi
           done
 
-          if [ ${#matches[@]} -eq 0 ]; then
-            echo "found=false" >> $GITHUB_OUTPUT
-          else
-            echo "found=true" >> $GITHUB_OUTPUT
-          fi
+          echo "found=$found" >> "$GITHUB_OUTPUT"
 
-      - name: No fragment (neutral)
-        if: steps.fragment.outputs.found == 'false'
-        run: |
-          echo "::notice::⚪ No changelog fragment found for this PR. See CONTRIBUTING.md for instructions."
-        continue-on-error: true
+      - name: Report neutral check
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const {owner, repo} = context.repo;
+            const head_sha = context.payload.pull_request.head.sha;
+            const found = core.getInput('found') || '${{ steps.detect.outputs.found }}';
 
+            const title = 'Changelog fragment';
+            const summary = (found === 'true')
+              ? `Found news fragment for this PR.\n\nPlace: \`newsfragments/<PR>.<type>.md\``
+              : `No news fragment found.\n\nAdd: \`newsfragments/${context.payload.pull_request.number}.{feature,improvement,bugfix,ci,test,doc}.md\`\nSee CONTRIBUTING.md → “Changelog fragments”.`;
+
+            await github.rest.checks.create({
+              owner, repo, head_sha,
+              name: 'Changelog fragment',
+              status: 'completed',
+              conclusion: 'neutral',        // <- always grey
+              output: { title, summary }
+            });
