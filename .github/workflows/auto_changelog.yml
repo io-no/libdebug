@@ -74,4 +74,4 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add CHANGELOG.md
           git commit -m "doc: updated CHANGELOG"
-          git push origin HEAD:"$BRANCH"
+          git push origin HEAD:"$BR"
