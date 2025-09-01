@@ -72,8 +72,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          MSG="doc: updated CHANGELOG for $NAME $VER"
-          if [ -n "${CODE:-}" ]; then MSG="$MSG - $CODE"; fi
           git add CHANGELOG.md
-          git commit -m "$MSG"
-          git push
+          git commit -m "doc: updated CHANGELOG"
+          git push origin HEAD:"$BRANCH"
