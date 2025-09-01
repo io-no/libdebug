@@ -74,4 +74,10 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add CHANGELOG.md
           git commit -m "doc: updated CHANGELOG"
-          git push origin HEAD:"$BR"
+          # determine current branch name and push to it
+          CUR=$(git branch --show-current || true)
+          if [ -z "$CUR" ] || [ "$CUR" = "HEAD" ]; then
+            # fallback (e.g., in odd checkouts)
+            CUR=$(git rev-parse --abbrev-ref HEAD)
+          fi
+          git push origin "HEAD:$CUR"
